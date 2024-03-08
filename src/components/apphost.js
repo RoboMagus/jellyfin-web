@@ -322,12 +322,17 @@ function askForExit() {
         exitPromise = actionsheet.show({
             title: globalize.translate('MessageConfirmAppExit'),
             items: [
-                {id: 'yes', name: globalize.translate('Yes')},
-                {id: 'no', name: globalize.translate('No')}
+                { id: 'logout', name: globalize.translate('ButtonSignOut') },
+                { id: 'yes', name: globalize.translate('Yes') },
+                { id: 'no', name: globalize.translate('No') }
             ]
         }).then(function (value) {
             if (value === 'yes') {
                 doExit();
+            } else if (value === 'logout') {
+                import('../scripts/clientUtils').then((clientUtils) => {
+                    Dashboard.logout();
+                });
             }
         }).finally(function () {
             exitPromise = null;
