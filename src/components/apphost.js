@@ -318,14 +318,14 @@ function askForExit() {
         return;
     }
     import('../scripts/clientUtils').then(() => {
-        const userId = Dashboard.getCurrentUserId();
         import('../components/actionSheet/actionSheet').then((actionsheet) => {
+            const userId = Dashboard.getCurrentUserId();
             exitPromise = actionsheet.show({
                 title: globalize.translate('MessageConfirmAppExit'),
                 items: [
-                    ...(userId && { id: 'logout', name: globalize.translate('ButtonSignOut') }),
                     { id: 'yes', name: globalize.translate('Yes'), selected: true },
-                    { id: 'no', name: globalize.translate('No') }
+                    { id: 'no', name: globalize.translate('No') },
+                    { id: 'dummy', name: (userId || '???')}
                 ]
             }).then(function (value) {
                 if (value === 'yes') {
