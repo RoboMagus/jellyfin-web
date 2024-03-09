@@ -221,6 +221,7 @@ import './login.scss';
                     showManualForm(context, true);
                 } else if (haspw == 'false') {
                     authenticateUserByName(context, getApiClient(), name, '');
+                    appSettings.enableAutoLogin(false);
                 } else {
                     context.querySelector('#txtManualName').value = name;
                     context.querySelector('#txtManualPassword').value = '';
