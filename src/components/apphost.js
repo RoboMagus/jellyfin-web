@@ -317,25 +317,25 @@ function askForExit() {
     if (exitPromise) {
         return;
     }
-
-    import('../components/actionSheet/actionSheet').then((actionsheet) => {
-        exitPromise = actionsheet.show({
-            title: globalize.translate('MessageConfirmAppExit'),
-            items: [
-                { id: 'logout', name: globalize.translate('ButtonSignOut') },
-                { id: 'yes', name: globalize.translate('Yes') },
-                { id: 'no', name: globalize.translate('No') }
-            ]
-        }).then(function (value) {
-            if (value === 'yes') {
-                doExit();
-            } else if (value === 'logout') {
-                import('../scripts/clientUtils').then((clientUtils) => {
+    import('../scripts/clientUtils').then(() => {
+        const userId = Dashboard.getCurrentUserId();
+        import('../components/actionSheet/actionSheet').then((actionsheet) => {
+            exitPromise = actionsheet.show({
+                title: globalize.translate('MessageConfirmAppExit'),
+                items: [
+                    ...(userId && { id: 'logout', name: globalize.translate('ButtonSignOut') }),
+                    { id: 'yes', name: globalize.translate('Yes'), selected: true },
+                    { id: 'no', name: globalize.translate('No') }
+                ]
+            }).then(function (value) {
+                if (value === 'yes') {
+                    doExit();
+                } else if (value === 'logout') {
                     Dashboard.logout();
-                });
-            }
-        }).finally(function () {
-            exitPromise = null;
+                }
+            }).finally(function () {
+                exitPromise = null;
+            });
         });
     });
 }
