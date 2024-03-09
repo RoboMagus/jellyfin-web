@@ -320,12 +320,13 @@ function askForExit() {
     import('../scripts/clientUtils').then(() => {
         import('../components/actionSheet/actionSheet').then((actionsheet) => {
             const userId = Dashboard.getCurrentUserId();
+            const logoutEntry = userId ? [{ id: 'logout', name: globalize.translate('ButtonSignOut') }] : [];
             exitPromise = actionsheet.show({
                 title: globalize.translate('MessageConfirmAppExit'),
                 items: [
-                    { id: 'yes', name: globalize.translate('Yes'), selected: true },
-                    { id: 'no', name: globalize.translate('No') },
-                    { id: 'dummy', name: (userId || '???')}
+                    ...logoutEntry,
+                    { id: 'yes', name: globalize.translate('Yes') },
+                    { id: 'no', name: globalize.translate('No') }
                 ]
             }).then(function (value) {
                 if (value === 'yes') {
